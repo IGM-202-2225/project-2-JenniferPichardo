@@ -11,13 +11,13 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ## Simulation Design
 
-_A brief explanation of your simulation._
+_A simulation of a peaceful fish tank._
 
 ### Controls
 
 -   _List all of the actions the player can have in your simulation_
-    -   _Include how to preform each action ( keyboard, mouse, UI Input )_
-    -   _Include what impact an action has in the simulation ( if is could be unclear )_
+    -   _Controls: Click with your mouse to feed your fish._
+    -   _Failure to feed the fish will cause them will cause them to get sick._
 
 ## _Agent 1 Name_
 
