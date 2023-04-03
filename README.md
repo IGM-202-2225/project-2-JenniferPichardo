@@ -11,13 +11,13 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ## Simulation Design
 
-_A simulation of a peaceful fish tank._
+_A simulation of a peaceful fish tank. One group of fish will typically stick together in groups while other types will try to avoid each other._
 
 ### Controls
 
 -   _List all of the actions the player can have in your simulation_
     -   _Controls: Click with your mouse to feed your fish._
-    -   _Failure to feed the fish will cause them will cause them to get sick._
+    -   _Failure to feed the fish will cause them to get sick._
 
 ## _Agent 1 Name_
 
