@@ -12,21 +12,26 @@ public class PhysicsObject : MonoBehaviour
     public float mass = 1f;
     public float gravityStrength = 1f;
 
+    public bool bounceOffWalls = false;
+
     public bool useGravity = false;
 
     public bool useFriction = false;
 
     public float frictionCoeff = 0.2f;
 
-    private Vector3 cameraSize;
+    public float radius = 1f;
 
-    private Vector3 mousePos;
+    public Vector3 Velocity => velocity;
+    public Vector3 Direction => direction;
+
+    public Vector3 Position => transform.position;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        cameraSize.y = Camera.main.orthographicSize;
-        cameraSize.x = cameraSize.y * Camera.main.aspect;
+        direction = (Vector3)Random.insideUnitCircle.normalized;
     }
 
     // Update is called once per frame
@@ -47,23 +52,31 @@ public class PhysicsObject : MonoBehaviour
         //calculate the new position based on the velocity for this frame
         transform.position += velocity * Time.deltaTime;
 
-        //store the direction that the object is moving in
-        direction = velocity.normalized;
+        if(velocity.sqrMagnitude > Mathf.Epsilon)
+        {
+            //store the direction that the object is moving in
+            direction = velocity.normalized;
+        }
 
         //zero out the acceleration for next frame
         acceleration = Vector3.zero;
 
+        transform.rotation = Quaternion.LookRotation(Vector3.back, direction);
+
         //get the mouse position for each frame
-        mousePos = Mouse.current.position.ReadValue();
-        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        mousePos.z = transform.position.z;
+        //mousePos = Mouse.current.position.ReadValue();
+        //mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        //mousePos.z = transform.position.z;
 
         //calculate force and apply to object
-        Vector3 force = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, 0);
-        force.Normalize();
-        ApplyForce(force);
+        //Vector3 force = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, 0);
+        //force.Normalize();
+        //ApplyForce(force);
 
-        Bounce();
+        if (bounceOffWalls)
+        {
+            Bounce();
+        }
     }
 
     /// <summary>
@@ -84,7 +97,7 @@ public class PhysicsObject : MonoBehaviour
         Vector3 friction = velocity * -1;
         friction.Normalize();
         friction = friction * coefficient;
-
+        
         ApplyForce(friction);
     }
 
@@ -95,19 +108,19 @@ public class PhysicsObject : MonoBehaviour
 
     private void Bounce()
     {
-        if(transform.position.x > cameraSize.x && velocity.x > 0)
+        if(transform.position.x > AgentManager.Instance.maxPosition.x && velocity.x > 0)
         {
             velocity.x *= -1f;
         }
-        if (transform.position.x < -cameraSize.x && velocity.x < 0)
+        if (transform.position.x < AgentManager.Instance.minPosition.x && velocity.x < 0)
         {
             velocity.x *= -1f;
         }
-        if (transform.position.y > cameraSize.y && velocity.y > 0)
+        if (transform.position.y > AgentManager.Instance.maxPosition.y && velocity.y > 0)
         {
             velocity.y *= -1f;
         }
-        if (transform.position.y < -cameraSize.y && velocity.y < 0)
+        if (transform.position.y < AgentManager.Instance.minPosition.y && velocity.y < 0)
         {
             velocity.y *= -1f;
         }
