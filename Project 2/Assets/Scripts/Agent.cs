@@ -46,7 +46,7 @@ public abstract class Agent : MonoBehaviour
     protected void Seek(Vector3 targetPos, float weight = 1f)
     {
         //calculate desired velocity
-        Vector3 desiredVelocity = targetPos = physicsObject.Position;
+        Vector3 desiredVelocity = targetPos - physicsObject.Position;
 
         //set desired velocity magnitude to max speed
         desiredVelocity = desiredVelocity.normalized * maxSpeed;
@@ -78,11 +78,10 @@ public abstract class Agent : MonoBehaviour
         wanderAngle = Mathf.Clamp(wanderAngle, -maxWanderAngle, maxWanderAngle);
 
         //get a position defined by wander angle
-        Vector3 wanderTarget = Quaternion.Euler(0, 0, wanderAngle) * physicsObject.Direction.normalized;
+        Vector3 wanderTarget = Quaternion.Euler(0, 0, wanderAngle) * physicsObject.Direction.normalized + physicsObject.Position;
 
         //seek towards wander position
         Seek(wanderTarget, weight);
-
     }
 
     protected void StayInBounds(float weight = 1f)

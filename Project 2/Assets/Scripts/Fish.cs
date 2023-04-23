@@ -9,5 +9,6 @@ public class Fish : Agent
         Wander();
         Separate(AgentManager.Instance.agents);
         StayInBounds(3f);
+        AvoidAllObstacles();
     }
 }
