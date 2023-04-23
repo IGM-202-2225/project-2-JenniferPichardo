@@ -27,11 +27,14 @@ public class PhysicsObject : MonoBehaviour
 
     public Vector3 Position => transform.position;
 
+    public Vector3 Right => transform.right;
+
 
     // Start is called before the first frame update
     void Start()
     {
         direction = (Vector3)Random.insideUnitCircle.normalized;
+
     }
 
     // Update is called once per frame
@@ -44,6 +47,10 @@ public class PhysicsObject : MonoBehaviour
         if (useFriction)
         {
             ApplyFriction(frictionCoeff);
+        }
+        if (bounceOffWalls)
+        {
+            Bounce();
         }
 
         //calculate new velocity based on current acceleraion of object
@@ -63,20 +70,6 @@ public class PhysicsObject : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation(Vector3.back, direction);
 
-        //get the mouse position for each frame
-        //mousePos = Mouse.current.position.ReadValue();
-        //mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        //mousePos.z = transform.position.z;
-
-        //calculate force and apply to object
-        //Vector3 force = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, 0);
-        //force.Normalize();
-        //ApplyForce(force);
-
-        if (bounceOffWalls)
-        {
-            Bounce();
-        }
     }
 
     /// <summary>

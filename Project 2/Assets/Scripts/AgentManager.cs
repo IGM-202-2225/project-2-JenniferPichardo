@@ -7,7 +7,7 @@ public class AgentManager : MonoBehaviour
     public static AgentManager Instance;
 
     [HideInInspector]
-    public List<TagPlayer> tagPlayers = new List<TagPlayer>();
+    public List<Agent> agents = new List<Agent>();
 
     [HideInInspector]
     public Vector2 maxPosition = Vector2.one;
@@ -16,7 +16,7 @@ public class AgentManager : MonoBehaviour
 
     public float edgePadding = 1f;
 
-    public TagPlayer playerPrefab;
+    public Agent playerPrefab;
 
     public int numPlayers = 10;
 
@@ -45,7 +45,7 @@ public class AgentManager : MonoBehaviour
 
         for(int i = 0; i < numPlayers; i++)
         {
-            tagPlayers.Add(Spawn(playerPrefab));
+            agents.Add(Spawn(playerPrefab));
         }
     }
 

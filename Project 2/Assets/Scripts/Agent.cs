@@ -20,6 +20,8 @@ public abstract class Agent : MonoBehaviour
 
     public float personalSpace = 1f;
 
+    public float visionRange = 2f;
+
     private void Awake()
     {
         if(physicsObject == null)
@@ -69,36 +71,55 @@ public abstract class Agent : MonoBehaviour
 
     protected void Wander(float weight = 1f)
     {
+        //update the angle of current wander
+        float maxWanderChange = maxWanderChangePerSecond * Time.deltaTime;
+        wanderAngle += Random.Range(-maxWanderChange, maxWanderChange);
+
+        wanderAngle = Mathf.Clamp(wanderAngle, -maxWanderAngle, maxWanderAngle);
+
+        //get a position defined by wander angle
+        Vector3 wanderTarget = Quaternion.Euler(0, 0, wanderAngle) * physicsObject.Direction.normalized;
+
+        //seek towards wander position
+        Seek(wanderTarget, weight);
 
     }
 
-    protected void StayInBounds()
+    protected void StayInBounds(float weight = 1f)
     {
         Vector3 futurePos = GetFuturePosition();
 
-        if(futurePos.x > AgentManager.Instance.maxPosition.x ||
+        if (futurePos.x > AgentManager.Instance.maxPosition.x ||
             futurePos.x < AgentManager.Instance.minPosition.x ||
             futurePos.y > AgentManager.Instance.maxPosition.y ||
             futurePos.y < AgentManager.Instance.minPosition.y)
         {
-            Seek(Vector3.zero);
-        } 
-        
+            Seek(Vector3.zero, weight);
+        }
+
     }
 
     public Vector3 GetFuturePosition(float timeToLookAhead = 1f)
     {
-        return new Vector3();
+        return physicsObject.Position + physicsObject.Velocity * timeToLookAhead;
     }
 
-    protected void Pursue(Agent other, float timeToLookAhead = 1f)
+    protected void Pursue(Agent other, float timeToLookAhead = 1f, float weight = 1f)
     {
+        //get future position of agent that is being pursued
+        Vector3 futurePos = other.GetFuturePosition(timeToLookAhead);
 
+        //seek towards future position
+        Seek(futurePos, weight);
     }
 
-    protected void Evade(Agent other, float timeToLookAhead = 1f)
+    protected void Evade(Agent other, float timeToLookAhead = 1f, float weight = 1f)
     {
+        //get future position of agent that is being evaded
+        Vector3 futurePos = other.GetFuturePosition(timeToLookAhead);
 
+        //flee from future position
+        Flee(futurePos, weight);
     }
 
     protected void Separate<T>(List<T> agents) where T : Agent
@@ -120,6 +141,60 @@ public abstract class Agent : MonoBehaviour
                 float weight = sqrPersonalSpace / (sqrDist + 0.1f);
                 Flee(other.physicsObject.Position, weight);
             }
+        }
+    }
+
+    private void AvoidObstacle(Obstacle obstacle)
+    {
+        //get a vector from agent to obstacle
+        Vector3 toObstacle = obstacle.Position - physicsObject.Position;
+
+        //check if obstacle is behind agent
+        float fwdToObstacleDot = Vector3.Dot(physicsObject.Direction, toObstacle);
+
+        if(fwdToObstacleDot < 0)
+        {
+            return;
+        }
+
+        //check if obstacle to too far from left or right
+        float rightToObstacleDot = Vector3.Dot(physicsObject.Right, toObstacle);
+
+        if(Mathf.Abs(rightToObstacleDot) > physicsObject.radius + obstacle.radius)
+        {
+            return;
+        }
+
+        if(fwdToObstacleDot > visionRange)
+        {
+            return;
+        }
+
+        Vector3 desiredVelocity;
+
+        if(rightToObstacleDot > 0)
+        {
+            //steer left
+            desiredVelocity = physicsObject.Right * -maxSpeed;
+        }
+        else
+        {
+            //steer right
+            desiredVelocity = physicsObject.Right * maxSpeed;
+        }
+
+        float weight = visionRange / (fwdToObstacleDot + 0.1f);
+
+        Vector3 steeringForce = (desiredVelocity - physicsObject.Velocity) * weight;
+
+        totalForce += steeringForce;
+    }
+
+    protected void AvoidAllObstacles()
+    {
+        foreach(Obstacle obstacle in ObstacleManager.Instance.obstacles)
+        {
+            AvoidObstacle(obstacle);
         }
     }
 }

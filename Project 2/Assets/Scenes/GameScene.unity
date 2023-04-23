@@ -152,11 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd382404df0006e4890405edd1184ccc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagPlayers: []
+  agents: []
   maxPosition: {x: 1, y: 1}
   minPosition: {x: -1, y: -1}
   edgePadding: 1
-  playerPrefab: {fileID: 602731134923641235, guid: 84fd8ec8ed64ae74895960672167329e, type: 3}
+  playerPrefab: {fileID: 1571613150141511783, guid: 9de47dbb82b588348833ab564165de23, type: 3}
   numPlayers: 10
 --- !u!4 &36598750
 Transform:
