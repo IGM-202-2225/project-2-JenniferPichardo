@@ -22,6 +22,10 @@ public abstract class Agent : MonoBehaviour
 
     public float visionRange = 2f;
 
+    public float arriveDistance = 3f;
+
+    public float visionConeAngle = 25f;
+
     private void Awake()
     {
         if(physicsObject == null)
@@ -141,6 +145,94 @@ public abstract class Agent : MonoBehaviour
                 Flee(other.physicsObject.Position, weight);
             }
         }
+    }
+
+    protected void Align<T>(List<T> agents, float weight = 1f) where T: Agent
+    {
+        //find the sum of the direction my neighbors are moving in
+        Vector3 flockDirection = Vector3.zero;
+
+        foreach(T agent in agents)
+        {
+
+            if(IsVisible(agent))
+            {
+                flockDirection += agent.physicsObject.Direction;
+            }
+        }
+
+        //early out if no other agents are visible
+        if(flockDirection == Vector3.zero)
+        {
+            return;
+        }
+
+        //normalize found flock direction
+        flockDirection = flockDirection.normalized;
+
+        //calculate steering force
+        Vector3 steeringForce = flockDirection - physicsObject.Velocity;
+
+        //apply to total force
+        totalForce += steeringForce * weight;
+    }
+
+    protected void Cohere<T>(List<T> agents, float weight = 1f) where T : Agent
+    {
+        //calculate the average position of the flock
+        Vector3 flockPosition = Vector3.zero;
+        int totalVisibleAgents = 0;
+
+        foreach(T agent in agents)
+        {
+            if (IsVisible(agent))
+            {
+                totalVisibleAgents++;
+                flockPosition += agent.physicsObject.Position;
+            }
+        }
+
+        //early out if agents aren't seen
+        if(totalVisibleAgents == 0)
+        {
+            return;
+        }
+
+        //get the average position of flock
+        flockPosition /= totalVisibleAgents;
+
+        //seek the center of the flock
+        Seek(flockPosition, weight);
+    }
+
+    protected void Flock<T>(List<T> agents, float cohereWeight = 1f, float alignWeight = 1f) where T : Agent
+    {
+        Separate(agents);
+        Cohere(agents, cohereWeight);
+        Align(agents, alignWeight);
+    }
+
+    private bool IsVisible(Agent agent)
+    {
+        //check if the other agent is within our vision range
+        float sqrDistance = Vector3.SqrMagnitude(physicsObject.Position - agent.physicsObject.Position);
+
+        //skip the other agent if it's the current agent
+        if (sqrDistance < float.Epsilon)
+        {
+            return false;
+        }
+
+        float angle = Vector3.Angle(physicsObject.Direction, agent.physicsObject.Position - physicsObject.Position);
+
+        if (angle > visionConeAngle)
+        {
+            return false;
+        }
+
+        //return true if other agent is within vision range
+        return sqrDistance < visionRange * visionRange;
+
     }
 
     private void AvoidObstacle(Obstacle obstacle)
