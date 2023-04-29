@@ -40,7 +40,8 @@ public class AgentManager : MonoBehaviour
 
 
             minPosition.x = camPosition.x - halfWidth + edgePadding;
-            minPosition.y = camPosition.y - halfHeight + edgePadding;
+            minPosition.y = camPosition.y - halfHeight + (edgePadding + 1.5f);
+
         }
 
         for(int i = 0; i < numPlayers; i++)
@@ -56,5 +57,7 @@ public class AgentManager : MonoBehaviour
 
         return Instantiate(prefabToSpawn, new Vector3(xPos, yPos), Quaternion.identity);
     }
+
+
 
 }

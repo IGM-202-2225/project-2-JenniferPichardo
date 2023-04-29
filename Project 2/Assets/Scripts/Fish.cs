@@ -9,6 +9,7 @@ public class Fish : Agent
         Wander();
 
         Flock(AgentManager.Instance.agents);
+        //Separate(AgentManager.Instance.agents);
 
         StayInBounds(3f);
 
