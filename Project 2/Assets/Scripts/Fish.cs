@@ -41,7 +41,7 @@ public class Fish : Agent
                 }
                 foreach (GameObject food in FoodManager.Instance.Foods)
                 {
-                    Seek(food.transform.position);
+                    //Seek(food.transform.position);
                 }
                 break;
         }

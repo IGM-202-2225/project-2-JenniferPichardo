@@ -41,12 +41,15 @@ public class FlockingFish : Agent
                 }
                 foreach (GameObject food in FoodManager.Instance.Foods)
                 {
-                    Seek(food.transform.position);
+                    //Seek(food.transform.position);
                 }
                 break;
             case FishState.Flee:
                 //flee from big fish
-                
+                foreach(Fish fish in AgentManager.Instance.bigAgents)
+                {
+                    Evade(fish);
+                }
                 break;
         }
     }
