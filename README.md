@@ -90,7 +90,7 @@ _This type of fish will typically want to be by itself and not be around fish of
 ## Sources
 
 -   _List all project sources here –models, textures, sound clips, assets, etc._
--   _If an asset is from the Unity store, include a link to the page and the author’s name_
+-   _Art sources (sprites and assets) created by me using Clip Studio Paint_
 
 ## Make it Your Own
 
@@ -103,5 +103,5 @@ _List any errors, lack of error checking, or specific information that I need to
 
 ### Requirements not completed
 
-_If you did not complete a project requirement, notate that here_
+Some agent states aren't fully implemented and not enough steering behaviors are used
 
