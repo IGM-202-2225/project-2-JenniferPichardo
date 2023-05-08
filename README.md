@@ -22,7 +22,7 @@ _A simulation of a peaceful fish tank. One group of fish will typically stick to
 
 _This type of fish will typically stick together in a group of the same kind. They will try to avoid and flee from the larger fish in the tank._
 
-### _State 1: Avoid Agent 1_
+### _State 1: Avoid Agent 2_
 
 **Objective:** Avoid the larger fish in the tank as much as possible.
 
