@@ -289,4 +289,9 @@ public abstract class Agent : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(physicsObject.Position, physicsObject.radius);
+    }
 }

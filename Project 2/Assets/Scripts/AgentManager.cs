@@ -7,7 +7,14 @@ public class AgentManager : MonoBehaviour
     public static AgentManager Instance;
 
     [HideInInspector]
+    //list for all agents
     public List<Agent> agents = new List<Agent>();
+    [HideInInspector]
+    //list for flocking fish agents
+    public List<FlockingFish> flockingAgents = new List<FlockingFish>();
+    [HideInInspector]
+    //list for big fish agents
+    public List<Fish> bigAgents = new List<Fish>();
 
     [HideInInspector]
     public Vector2 maxPosition = Vector2.one;
@@ -16,9 +23,14 @@ public class AgentManager : MonoBehaviour
 
     public float edgePadding = 1f;
 
-    public Agent playerPrefab;
+    public Fish bigFish;
+    public FlockingFish flockingFish;
 
-    public int numPlayers = 10;
+    //number of standard fish
+    public int numStandardFish = 5;
+
+    //number of flocking fish
+    public int numFlockingFish = 10;
 
     private void Awake()
     {
@@ -27,6 +39,7 @@ public class AgentManager : MonoBehaviour
             Instance = this;
         }
 
+        //set up camera dimensions
         Camera cam = Camera.main;
 
         if(cam != null)
@@ -40,16 +53,27 @@ public class AgentManager : MonoBehaviour
 
 
             minPosition.x = camPosition.x - halfWidth + edgePadding;
-            minPosition.y = camPosition.y - halfHeight + (edgePadding + 1.5f);
+            minPosition.y = camPosition.y - halfHeight + edgePadding;
 
         }
 
-        for(int i = 0; i < numPlayers; i++)
+        //spawn standard big fish
+        for(int i = 0; i < numStandardFish; i++)
         {
-            agents.Add(Spawn(playerPrefab));
+            Fish temp = Spawn(bigFish);
+            bigAgents.Add(temp);
+            agents.Add(temp);
+        }
+        //spawn flocking fish
+        for(int i = 0; i < numFlockingFish; i++)
+        {
+            FlockingFish temp = Spawn(flockingFish);
+            flockingAgents.Add(temp);
+            agents.Add(temp);
         }
     }
 
+    //spawn agents at a random location in camera
     private T Spawn<T>(T prefabToSpawn) where T : Agent
     {
         float xPos = Random.Range(minPosition.x, maxPosition.x);
@@ -57,7 +81,4 @@ public class AgentManager : MonoBehaviour
 
         return Instantiate(prefabToSpawn, new Vector3(xPos, yPos), Quaternion.identity);
     }
-
-
-
 }
