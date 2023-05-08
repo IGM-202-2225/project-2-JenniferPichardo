@@ -161,7 +161,7 @@ MonoBehaviour:
   bigFish: {fileID: 5592117080448264191, guid: f533e5a4d84c2a5408fe3b63f6e67481, type: 3}
   flockingFish: {fileID: 1609094099124025387, guid: 86c0d797ce681664091e5a43a2aaabcf, type: 3}
   numStandardFish: 5
-  numFlockingFish: 25
+  numFlockingFish: 15
 --- !u!4 &36598750
 Transform:
   m_ObjectHideFlags: 0
@@ -282,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalRotation.w
@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalRotation.w
@@ -597,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1229743634379320122, guid: b0154699d76cccd4eb0ef500c31bf571, type: 3}
       propertyPath: m_LocalRotation.w
