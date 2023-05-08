@@ -95,8 +95,7 @@ _This type of fish will typically want to be by itself and not be around fish of
 ## Make it Your Own
 
 - Will add my own art assets to the game.
-- Will add some ambience sound to the game.
-- My overall goal for this is to create a peaceful and calm aesthetic and ambience for the final product.
+- My overall goal for this is to create a peaceful and calm aesthetic for the final product.
 
 ## Known Issues
 
